@@ -1,18 +1,37 @@
-version: "3"
+version: "3.8"
 
 services:
   miwifi-exporter:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     image: miwifi-exporter:latest
     container_name: miwifi-exporter
-    restart: always
+    restart: unless-stopped
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
+        max-file: "3"
     ports:
       - "9001:9001"
     environment:
-      - ROUTER_IP=xxx
-      - ROUTER_PASSWORD=xxx
-      - ROUTER_HOST=xxx
+      - ROUTER_IP=${ROUTER_IP}
+      - ROUTER_PASSWORD=${ROUTER_PASSWORD}
+      - ROUTER_HOST=${ROUTER_HOST:-miwifi}
+      - SERVER_PORT=${SERVER_PORT:-9001}
+      - LOGGING_LEVEL=${LOGGING_LEVEL:-info}
+      - LOGGING_FORMAT=${LOGGING_FORMAT:-json}
+      - CACHE_ENABLED=${CACHE_ENABLED:-true}
+      - CACHE_TTL=${CACHE_TTL:-60s}
+      - ROUTER_TIMEOUT=${ROUTER_TIMEOUT:-30}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.miwifi.rule=Host(`miwifi-exporter.local`)"
+      - "traefik.http.services.miwifi.loadbalancer.server.port=9001"

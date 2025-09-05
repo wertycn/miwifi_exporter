@@ -1,0 +1,11 @@
+2025/09/05 10:55:18 Mock MiWiFi Server for Testing
+2025/09/05 10:55:18 =================================
+2025/09/05 10:55:18 Server running on http://localhost:8080
+2025/09/05 10:55:18 Use this server to test miwifi-exporter
+2025/09/05 10:55:18 Configuration for exporter:
+2025/09/05 10:55:18   IP: localhost
+2025/09/05 10:55:18   Port: 8080
+2025/09/05 10:55:18   Password: any_password
+2025/09/05 10:55:18 =================================
+2025/09/05 10:55:18 Mock MiWiFi server starting on port 8080
+2025/09/05 10:55:18 Auth token: mock_token_1757069718

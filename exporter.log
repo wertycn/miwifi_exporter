@@ -1,0 +1,13 @@
+2025/09/05 10:57:20 INFO: Starting miwifi-exporter
+2025/09/05 10:57:20 INFO: Configuration loaded - Router: 127.0.0.1, Server Port: 9001
+2025/09/05 10:57:20 INFO: Testing router connection...
+2025/09/05 10:57:20 INFO: Starting server on :9001
+2025/09/05 10:57:20 INFO: Metrics available at http://localhost:9001/metrics
+2025/09/05 10:57:20 ERROR: Failed to authenticate with router: authentication: router authentication failed (caused by: network: failed to get initial page (caused by: Get "http://127.0.0.1/cgi-bin/luci/web": dial tcp 127.0.0.1:80: connect: connection refused))
+2025/09/05 10:57:20 WARN: Please check your router IP and password in configuration
+2025/09/05 10:57:51 ERROR: Failed to collect router data: failed to fetch router data: some data fetches failed: authentication: router authentication failed (caused by: network: failed to get initial page (caused by: Get "http://127.0.0.1/cgi-bin/luci/web": dial tcp 127.0.0.1:80: connect: connection refused))
+2025/09/05 10:58:06 ERROR: Failed to collect router data: failed to fetch router data: some data fetches failed: authentication: router authentication failed (caused by: network: failed to get initial page (caused by: Get "http://127.0.0.1/cgi-bin/luci/web": dial tcp 127.0.0.1:80: connect: connection refused))
+2025/09/05 10:58:22 ERROR: Failed to collect router data: failed to fetch router data: some data fetches failed: authentication: router authentication failed (caused by: network: failed to get initial page (caused by: Get "http://127.0.0.1/cgi-bin/luci/web": dial tcp 127.0.0.1:80: connect: connection refused))
+2025/09/05 10:58:38 ERROR: Failed to collect router data: failed to fetch router data: some data fetches failed: authentication: router authentication failed (caused by: network: failed to get initial page (caused by: Get "http://127.0.0.1/cgi-bin/luci/web": dial tcp 127.0.0.1:80: connect: connection refused))
+2025/09/05 10:59:50 INFO: Shutting down server...
+2025/09/05 10:59:50 INFO: Server stopped
