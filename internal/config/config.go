@@ -69,7 +69,7 @@ var (
 		},
 		Cache: CacheConfig{
 			Enabled: true,
-			TTL:     60 * time.Second,
+			TTL:     10 * time.Second,
 		},
 		Logging: LoggingConfig{
 			Level:  "info",

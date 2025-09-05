@@ -73,7 +73,7 @@ type DeviceList struct {
 
 type DeviceEntry struct {
 	Mac       string           `json:"mac"`
-	OnNme     string           `json:"oname"`
+	OName     string           `json:"oname"`
 	IsAP      int              `json:"isap"`
 	Parent    string           `json:"parent"`
 	Authority AuthorityInfo    `json:"authority"`
@@ -173,7 +173,7 @@ type WifiDetails struct {
 	WeakThreshold string    `json:"weakthreshold"`
 	Device      string      `json:"device"`
 	Ax          string      `json:"ax"`
-	Hidden      string      `json:"hidden"`
+	Hidden      interface{} `json:"hidden"`
 	Password    string      `json:"password"`
 	Channel     string      `json:"channel"`
 	TxPWR       string      `json:"txpwr"`

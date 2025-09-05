@@ -64,10 +64,10 @@ func NewSmartCache(ttl time.Duration, sizeLimit int) *SmartCache {
 // Get retrieves a value from cache with access tracking
 func (sc *SmartCache) Get(key string) (interface{}, bool) {
 	sc.mu.RLock()
-	defer sc.mu.RUnlock()
 	
 	item, found := sc.items[key]
 	if !found {
+		sc.mu.RUnlock()
 		sc.misses++
 		return nil, false
 	}
@@ -75,7 +75,7 @@ func (sc *SmartCache) Get(key string) (interface{}, bool) {
 	// Check if expired
 	if item.IsExpired() {
 		sc.mu.RUnlock()
-		sc.Delete(key)
+		sc.deleteExpired(key)
 		sc.misses++
 		return nil, false
 	}
@@ -85,6 +85,7 @@ func (sc *SmartCache) Get(key string) (interface{}, bool) {
 	item.accessCount++
 	sc.hits++
 	
+	sc.mu.RUnlock()
 	return item.value, true
 }
 
@@ -215,6 +216,17 @@ func (sc *SmartCache) Stop() {
 	sc.cleanupCancel()
 	close(sc.stop)
 	sc.cleanup.Stop()
+}
+
+// deleteExpired safely deletes an expired item
+func (sc *SmartCache) deleteExpired(key string) {
+	sc.mu.Lock()
+	defer sc.mu.Unlock()
+	
+	if _, exists := sc.items[key]; exists {
+		delete(sc.items, key)
+		sc.evictions++
+	}
 }
 
 // estimateSize provides a rough estimate of the value size

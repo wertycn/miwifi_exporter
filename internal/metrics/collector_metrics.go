@@ -6,47 +6,47 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-// CollectorMetrics tracks the performance of the metrics collector
+// CollectorMetrics 跟踪指标收集器的性能
 type CollectorMetrics struct {
-	// Collection metrics
+	// 收集指标
 	collectionDuration *prometheus.HistogramVec
 	collectionErrors   *prometheus.CounterVec
 	collectionSuccess  *prometheus.CounterVec
 	
-	// Cache metrics
+	// 缓存指标
 	cacheHits         *prometheus.CounterVec
 	cacheMisses       *prometheus.CounterVec
 	cacheEvictions    *prometheus.CounterVec
 	cacheSize         *prometheus.GaugeVec
 	
-	// HTTP client metrics
+	// HTTP客户端指标
 	httpRequestDuration *prometheus.HistogramVec
 	httpRequestSize     *prometheus.HistogramVec
 	httpResponseSize    *prometheus.HistogramVec
 	httpRequestErrors   *prometheus.CounterVec
 	
-	// Data fetcher metrics
+	// 数据获取指标
 	dataFetchDuration   *prometheus.HistogramVec
 	dataFetchSuccess    *prometheus.CounterVec
 	dataFetchErrors     *prometheus.CounterVec
 	dataFetchTimeouts   *prometheus.CounterVec
 	
-	// System metrics
+	// 系统指标
 	memoryUsage     *prometheus.GaugeVec
 	goroutines      *prometheus.GaugeVec
 	uptime          *prometheus.GaugeVec
 	startTime       time.Time
 }
 
-// NewCollectorMetrics creates new collector metrics
+// NewCollectorMetrics 创建新的收集器指标
 func NewCollectorMetrics(namespace string) *CollectorMetrics {
 	return &CollectorMetrics{
-		// Collection metrics
+		// 收集指标
 		collectionDuration: prometheus.NewHistogramVec(
 			prometheus.HistogramOpts{
 				Namespace: namespace,
 				Name:      "collection_duration_seconds",
-				Help:      "Duration of metrics collection",
+				Help:      "指标收集持续时间",
 				Buckets:   prometheus.DefBuckets,
 			},
 			[]string{"operation"},
@@ -55,7 +55,7 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.CounterOpts{
 				Namespace: namespace,
 				Name:      "collection_errors_total",
-				Help:      "Total number of collection errors",
+				Help:      "收集错误总数",
 			},
 			[]string{"operation", "error_type"},
 		),
@@ -63,17 +63,17 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.CounterOpts{
 				Namespace: namespace,
 				Name:      "collection_success_total",
-				Help:      "Total number of successful collections",
+				Help:      "成功收集总数",
 			},
 			[]string{"operation"},
 		),
 		
-		// Cache metrics
+		// 缓存指标
 		cacheHits: prometheus.NewCounterVec(
 			prometheus.CounterOpts{
 				Namespace: namespace,
 				Name:      "cache_hits_total",
-				Help:      "Total number of cache hits",
+				Help:      "缓存命中总数",
 			},
 			[]string{"cache_type"},
 		),
@@ -81,7 +81,7 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.CounterOpts{
 				Namespace: namespace,
 				Name:      "cache_misses_total",
-				Help:      "Total number of cache misses",
+				Help:      "缓存未命中总数",
 			},
 			[]string{"cache_type"},
 		),
@@ -89,7 +89,7 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.CounterOpts{
 				Namespace: namespace,
 				Name:      "cache_evictions_total",
-				Help:      "Total number of cache evictions",
+				Help:      "缓存淘汰总数",
 			},
 			[]string{"cache_type"},
 		),
@@ -97,17 +97,17 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.GaugeOpts{
 				Namespace: namespace,
 				Name:      "cache_size",
-				Help:      "Current cache size",
+				Help:      "当前缓存大小",
 			},
 			[]string{"cache_type"},
 		),
 		
-		// HTTP client metrics
+		// HTTP客户端指标
 		httpRequestDuration: prometheus.NewHistogramVec(
 			prometheus.HistogramOpts{
 				Namespace: namespace,
 				Name:      "http_request_duration_seconds",
-				Help:      "Duration of HTTP requests",
+				Help:      "HTTP请求持续时间",
 				Buckets:   []float64{0.1, 0.5, 1.0, 2.5, 5.0, 10.0},
 			},
 			[]string{"method", "endpoint", "status_code"},
@@ -116,7 +116,7 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.HistogramOpts{
 				Namespace: namespace,
 				Name:      "http_request_size_bytes",
-				Help:      "Size of HTTP requests",
+				Help:      "HTTP请求大小",
 				Buckets:   prometheus.ExponentialBuckets(100, 10, 7),
 			},
 			[]string{"method", "endpoint"},
@@ -125,7 +125,7 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.HistogramOpts{
 				Namespace: namespace,
 				Name:      "http_response_size_bytes",
-				Help:      "Size of HTTP responses",
+				Help:      "HTTP响应大小",
 				Buckets:   prometheus.ExponentialBuckets(100, 10, 7),
 			},
 			[]string{"method", "endpoint"},
@@ -134,17 +134,17 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.CounterOpts{
 				Namespace: namespace,
 				Name:      "http_request_errors_total",
-				Help:      "Total number of HTTP request errors",
+				Help:      "HTTP请求错误总数",
 			},
 			[]string{"method", "endpoint", "error_type"},
 		),
 		
-		// Data fetcher metrics
+		// 数据获取指标
 		dataFetchDuration: prometheus.NewHistogramVec(
 			prometheus.HistogramOpts{
 				Namespace: namespace,
 				Name:      "data_fetch_duration_seconds",
-				Help:      "Duration of data fetch operations",
+				Help:      "数据获取操作持续时间",
 				Buckets:   []float64{0.5, 1.0, 2.5, 5.0, 10.0, 30.0},
 			},
 			[]string{"data_type", "source"},
@@ -153,7 +153,7 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.CounterOpts{
 				Namespace: namespace,
 				Name:      "data_fetch_success_total",
-				Help:      "Total number of successful data fetches",
+				Help:      "成功数据获取总数",
 			},
 			[]string{"data_type"},
 		),
@@ -161,7 +161,7 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.CounterOpts{
 				Namespace: namespace,
 				Name:      "data_fetch_errors_total",
-				Help:      "Total number of data fetch errors",
+				Help:      "数据获取错误总数",
 			},
 			[]string{"data_type", "error_type"},
 		),
@@ -169,17 +169,17 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.CounterOpts{
 				Namespace: namespace,
 				Name:      "data_fetch_timeouts_total",
-				Help:      "Total number of data fetch timeouts",
+				Help:      "数据获取超时总数",
 			},
 			[]string{"data_type"},
 		),
 		
-		// System metrics
+		// 系统指标
 		memoryUsage: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Namespace: namespace,
 				Name:      "memory_usage_bytes",
-				Help:      "Memory usage in bytes",
+				Help:      "内存使用量(字节)",
 			},
 			[]string{"type"},
 		),
@@ -187,7 +187,7 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.GaugeOpts{
 				Namespace: namespace,
 				Name:      "goroutines",
-				Help:      "Number of goroutines",
+				Help:      "Goroutine数量",
 			},
 			[]string{},
 		),
@@ -195,7 +195,7 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 			prometheus.GaugeOpts{
 				Namespace: namespace,
 				Name:      "uptime_seconds",
-				Help:      "Uptime in seconds",
+				Help:      "运行时间(秒)",
 			},
 			[]string{},
 		),
@@ -203,7 +203,7 @@ func NewCollectorMetrics(namespace string) *CollectorMetrics {
 	}
 }
 
-// Describe implements prometheus.Collector
+// Describe 实现 prometheus.Collector 接口
 func (cm *CollectorMetrics) Describe(ch chan<- *prometheus.Desc) {
 	cm.collectionDuration.Describe(ch)
 	cm.collectionErrors.Describe(ch)
@@ -225,7 +225,7 @@ func (cm *CollectorMetrics) Describe(ch chan<- *prometheus.Desc) {
 	cm.uptime.Describe(ch)
 }
 
-// Collect implements prometheus.Collector
+// Collect 实现 prometheus.Collector 接口
 func (cm *CollectorMetrics) Collect(ch chan<- prometheus.Metric) {
 	cm.collectionDuration.Collect(ch)
 	cm.collectionErrors.Collect(ch)
@@ -247,102 +247,102 @@ func (cm *CollectorMetrics) Collect(ch chan<- prometheus.Metric) {
 	cm.uptime.Collect(ch)
 }
 
-// RecordCollectionDuration records the duration of a collection operation
+// RecordCollectionDuration 记录收集操作的持续时间
 func (cm *CollectorMetrics) RecordCollectionDuration(operation string, duration time.Duration) {
 	cm.collectionDuration.WithLabelValues(operation).Observe(duration.Seconds())
 }
 
-// RecordCollectionError records a collection error
+// RecordCollectionError 记录收集错误
 func (cm *CollectorMetrics) RecordCollectionError(operation, errorType string) {
 	cm.collectionErrors.WithLabelValues(operation, errorType).Inc()
 }
 
-// RecordCollectionSuccess records a successful collection
+// RecordCollectionSuccess 记录成功的收集
 func (cm *CollectorMetrics) RecordCollectionSuccess(operation string) {
 	cm.collectionSuccess.WithLabelValues(operation).Inc()
 }
 
-// RecordCacheHit records a cache hit
+// RecordCacheHit 记录缓存命中
 func (cm *CollectorMetrics) RecordCacheHit(cacheType string) {
 	cm.cacheHits.WithLabelValues(cacheType).Inc()
 }
 
-// RecordCacheMiss records a cache miss
+// RecordCacheMiss 记录缓存未命中
 func (cm *CollectorMetrics) RecordCacheMiss(cacheType string) {
 	cm.cacheMisses.WithLabelValues(cacheType).Inc()
 }
 
-// RecordCacheEviction records a cache eviction
+// RecordCacheEviction 记录缓存淘汰
 func (cm *CollectorMetrics) RecordCacheEviction(cacheType string) {
 	cm.cacheEvictions.WithLabelValues(cacheType).Inc()
 }
 
-// SetCacheSize sets the current cache size
+// SetCacheSize 设置当前缓存大小
 func (cm *CollectorMetrics) SetCacheSize(cacheType string, size float64) {
 	cm.cacheSize.WithLabelValues(cacheType).Set(size)
 }
 
-// RecordHTTPRequestDuration records HTTP request duration
+// RecordHTTPRequestDuration 记录HTTP请求持续时间
 func (cm *CollectorMetrics) RecordHTTPRequestDuration(method, endpoint, statusCode string, duration time.Duration) {
 	cm.httpRequestDuration.WithLabelValues(method, endpoint, statusCode).Observe(duration.Seconds())
 }
 
-// RecordHTTPRequestSize records HTTP request size
+// RecordHTTPRequestSize 记录HTTP请求大小
 func (cm *CollectorMetrics) RecordHTTPRequestSize(method, endpoint string, size int64) {
 	cm.httpRequestSize.WithLabelValues(method, endpoint).Observe(float64(size))
 }
 
-// RecordHTTPResponseSize records HTTP response size
+// RecordHTTPResponseSize 记录HTTP响应大小
 func (cm *CollectorMetrics) RecordHTTPResponseSize(method, endpoint string, size int64) {
 	cm.httpResponseSize.WithLabelValues(method, endpoint).Observe(float64(size))
 }
 
-// RecordHTTPRequestError records HTTP request error
+// RecordHTTPRequestError 记录HTTP请求错误
 func (cm *CollectorMetrics) RecordHTTPRequestError(method, endpoint, errorType string) {
 	cm.httpRequestErrors.WithLabelValues(method, endpoint, errorType).Inc()
 }
 
-// RecordDataFetchDuration records data fetch duration
+// RecordDataFetchDuration 记录数据获取持续时间
 func (cm *CollectorMetrics) RecordDataFetchDuration(dataType, source string, duration time.Duration) {
 	cm.dataFetchDuration.WithLabelValues(dataType, source).Observe(duration.Seconds())
 }
 
-// RecordDataFetchSuccess records successful data fetch
+// RecordDataFetchSuccess 记录成功的数据获取
 func (cm *CollectorMetrics) RecordDataFetchSuccess(dataType string) {
 	cm.dataFetchSuccess.WithLabelValues(dataType).Inc()
 }
 
-// RecordDataFetchError records data fetch error
+// RecordDataFetchError 记录数据获取错误
 func (cm *CollectorMetrics) RecordDataFetchError(dataType, errorType string) {
 	cm.dataFetchErrors.WithLabelValues(dataType, errorType).Inc()
 }
 
-// RecordDataFetchTimeout records data fetch timeout
+// RecordDataFetchTimeout 记录数据获取超时
 func (cm *CollectorMetrics) RecordDataFetchTimeout(dataType string) {
 	cm.dataFetchTimeouts.WithLabelValues(dataType).Inc()
 }
 
-// UpdateSystemMetrics updates system metrics
+// UpdateSystemMetrics 更新系统指标
 func (cm *CollectorMetrics) UpdateSystemMetrics() {
-	// Update uptime
+	// 更新运行时间
 	uptime := time.Since(cm.startTime).Seconds()
 	cm.uptime.WithLabelValues().Set(uptime)
 	
-	// Memory usage will be updated by the caller
+	// 内存使用量将由调用者更新
 }
 
-// SetMemoryUsage sets memory usage metrics
+// SetMemoryUsage 设置内存使用量指标
 func (cm *CollectorMetrics) SetMemoryUsage(memType string, bytes float64) {
 	cm.memoryUsage.WithLabelValues(memType).Set(bytes)
 }
 
-// SetGoroutines sets the number of goroutines
+// SetGoroutines 设置Goroutine数量
 func (cm *CollectorMetrics) SetGoroutines(count float64) {
 	cm.goroutines.WithLabelValues().Set(count)
 }
 
-// RecordCollectionStart records the start of a collection operation
+// RecordCollectionStart 记录收集操作的开始
 func (cm *CollectorMetrics) RecordCollectionStart() {
-	// This method can be extended to track collection start time
-	// For now, it's a placeholder for future timing enhancements
+	// 此方法可以扩展以跟踪收集开始时间
+	// 目前是未来时间增强功能的占位符
 }

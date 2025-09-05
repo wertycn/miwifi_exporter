@@ -103,142 +103,142 @@ func (mc *MetricsCollector) initializeDescriptors() {
 	mc.descriptors = map[string]*prometheus.Desc{
 		"cpu_cores": prometheus.NewDesc(
 			fmt.Sprintf("%s_cpu_cores", namespace),
-			"Number of CPU cores",
+			"CPU核心数",
 			[]string{"host"}, nil,
 		),
 		"cpu_mhz": prometheus.NewDesc(
 			fmt.Sprintf("%s_cpu_mhz", namespace),
-			"CPU frequency in MHz",
+			"CPU频率(MHz)",
 			[]string{"host"}, nil,
 		),
 		"cpu_load": prometheus.NewDesc(
 			fmt.Sprintf("%s_cpu_load", namespace),
-			"CPU load percentage",
+			"CPU负载百分比",
 			[]string{"host"}, nil,
 		),
 		"memory_total_mb": prometheus.NewDesc(
 			fmt.Sprintf("%s_memory_total_mb", namespace),
-			"Total memory in MB",
+			"总内存(MB)",
 			[]string{"host"}, nil,
 		),
 		"memory_usage_mb": prometheus.NewDesc(
 			fmt.Sprintf("%s_memory_usage_mb", namespace),
-			"Memory usage in MB",
+			"内存使用量(MB)",
 			[]string{"host"}, nil,
 		),
 		"memory_usage": prometheus.NewDesc(
 			fmt.Sprintf("%s_memory_usage", namespace),
-			"Memory usage percentage",
+			"内存使用率",
 			[]string{"host"}, nil,
 		),
 		"count_all": prometheus.NewDesc(
 			fmt.Sprintf("%s_count_all", namespace),
-			"Total number of devices",
+			"设备总数",
 			[]string{"host"}, nil,
 		),
 		"count_online": prometheus.NewDesc(
 			fmt.Sprintf("%s_count_online", namespace),
-			"Number of online devices",
+			"在线设备数",
 			[]string{"host"}, nil,
 		),
 		"count_all_without_mash": prometheus.NewDesc(
 			fmt.Sprintf("%s_count_all_without_mash", namespace),
-			"Total number of devices without mesh",
+			"非mesh设备总数",
 			[]string{"host"}, nil,
 		),
 		"count_online_without_mash": prometheus.NewDesc(
 			fmt.Sprintf("%s_count_online_without_mash", namespace),
-			"Number of online devices without mesh",
+			"在线非mesh设备数",
 			[]string{"host"}, nil,
 		),
 		"uptime": prometheus.NewDesc(
 			fmt.Sprintf("%s_uptime", namespace),
-			"Router uptime in seconds",
+			"路由器运行时间(秒)",
 			[]string{"host"}, nil,
 		),
 		"platform": prometheus.NewDesc(
 			fmt.Sprintf("%s_platform", namespace),
-			"Router platform information",
+			"路由器平台信息",
 			[]string{"platform"}, nil,
 		),
 		"version": prometheus.NewDesc(
 			fmt.Sprintf("%s_version", namespace),
-			"Router firmware version",
+			"路由器固件版本",
 			[]string{"version"}, nil,
 		),
 		"sn": prometheus.NewDesc(
 			fmt.Sprintf("%s_sn", namespace),
-			"Router serial number",
+			"路由器序列号",
 			[]string{"sn"}, nil,
 		),
 		"mac": prometheus.NewDesc(
 			fmt.Sprintf("%s_mac", namespace),
-			"Router MAC address",
+			"路由器MAC地址",
 			[]string{"mac"}, nil,
 		),
 		"ipv4": prometheus.NewDesc(
 			fmt.Sprintf("%s_ipv4", namespace),
-			"Router IPv4 address",
+			"路由器IPv4地址",
 			[]string{"ipv4"}, nil,
 		),
 		"ipv4_mask": prometheus.NewDesc(
 			fmt.Sprintf("%s_ipv4_mask", namespace),
-			"Router IPv4 subnet mask",
+			"路由器IPv4子网掩码",
 			[]string{"ipv4"}, nil,
 		),
 		"ipv6": prometheus.NewDesc(
 			fmt.Sprintf("%s_ipv6", namespace),
-			"Router IPv6 address",
+			"路由器IPv6地址",
 			[]string{"ipv6"}, nil,
 		),
 		"wan_upload_speed": prometheus.NewDesc(
 			fmt.Sprintf("%s_wan_upload_speed", namespace),
-			"WAN upload speed",
+			"WAN上传速度",
 			[]string{"host"}, nil,
 		),
 		"wan_download_speed": prometheus.NewDesc(
 			fmt.Sprintf("%s_wan_download_speed", namespace),
-			"WAN download speed",
+			"WAN下载速度",
 			[]string{"host"}, nil,
 		),
 		"wan_upload_traffic": prometheus.NewDesc(
 			fmt.Sprintf("%s_wan_upload_traffic", namespace),
-			"WAN upload traffic",
+			"WAN上传流量",
 			[]string{"host"}, nil,
 		),
 		"wan_download_traffic": prometheus.NewDesc(
 			fmt.Sprintf("%s_wan_download_traffic", namespace),
-			"WAN download traffic",
+			"WAN下载流量",
 			[]string{"host"}, nil,
 		),
 		"device_upload_traffic": prometheus.NewDesc(
 			fmt.Sprintf("%s_device_upload_traffic", namespace),
-			"Device upload traffic",
+			"设备上传流量",
 			[]string{"ip", "mac", "device_name", "is_ap"}, nil,
 		),
 		"device_upload_speed": prometheus.NewDesc(
 			fmt.Sprintf("%s_device_upload_speed", namespace),
-			"Device upload speed",
+			"设备上传速度",
 			[]string{"ip", "mac", "device_name", "is_ap"}, nil,
 		),
 		"device_download_traffic": prometheus.NewDesc(
 			fmt.Sprintf("%s_device_download_traffic", namespace),
-			"Device download traffic",
+			"设备下载流量",
 			[]string{"ip", "mac", "device_name", "is_ap"}, nil,
 		),
 		"device_download_speed": prometheus.NewDesc(
 			fmt.Sprintf("%s_device_download_speed", namespace),
-			"Device download speed",
+			"设备下载速度",
 			[]string{"ip", "mac", "device_name", "is_ap"}, nil,
 		),
 		"device_online_time": prometheus.NewDesc(
 			fmt.Sprintf("%s_device_online_time", namespace),
-			"Device online time",
+			"设备在线时间",
 			[]string{"ip", "mac", "device_name", "is_ap"}, nil,
 		),
 		"wifi_detail": prometheus.NewDesc(
 			fmt.Sprintf("%s_wifi_detail", namespace),
-			"WiFi network details",
+			"WiFi网络详细信息",
 			[]string{"ssid", "status", "band_list", "channel"}, nil,
 		),
 	}
@@ -246,8 +246,8 @@ func (mc *MetricsCollector) initializeDescriptors() {
 
 func (mc *MetricsCollector) SetClient(client client.RouterClient) {
 	mc.client = client
-	// Set data loader for background preloading
-	mc.cache.SetDataLoader(client, mc.config.Cache.TTL/2)
+	// 不启用背景预加载，实现按需缓存策略
+	// 只有访问时才获取数据，缓存10秒后失效
 }
 
 func (mc *MetricsCollector) Describe(ch chan<- *prometheus.Desc) {
